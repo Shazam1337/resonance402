@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom wallet adapter modal styles */
+.wallet-adapter-modal-wrapper {
+  background: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.wallet-adapter-modal {
+  background: rgba(17, 24, 39, 0.95) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.2) !important;
+}
+
+.wallet-adapter-modal-title {
+  color: #FFD700 !important;
+  font-weight: bold !important;
+}
+
+/* Add logo to modal header */
+.wallet-adapter-modal-title::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-image: url('/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 0.75rem;
+  vertical-align: middle;
+}
+
+.wallet-adapter-modal-list {
+  margin: 1rem 0 !important;
+}
+
+.wallet-adapter-modal-list-item {
+  background: rgba(31, 41, 55, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  margin-bottom: 0.5rem !important;
+  transition: all 0.2s !important;
+}
+
+.wallet-adapter-modal-list-item:hover {
+  background: rgba(55, 65, 81, 0.7) !important;
+  border-color: rgba(255, 215, 0, 0.3) !important;
+  transform: translateX(4px) !important;
+}
+
+.wallet-adapter-modal-list-item-button {
+  color: #d1d5db !important;
+  font-weight: 500 !important;
+}
+
+.wallet-adapter-modal-button-close {
+  color: #9ca3af !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.wallet-adapter-modal-button-close:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+:root {
+  --resonance-gold: #FFD700;
+  --resonance-turquoise: #00FFF6;
+  --resonance-purple: #C77DFF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Subtle background texture for depth */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 25% 35%, rgba(199, 125, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 65%, rgba(0, 255, 246, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(199, 125, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(199, 125, 255, 0.5);
+}
+
+/* Glow effects - Subtle and professional */
+.glow-gold {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4),
+              0 0 30px rgba(255, 215, 0, 0.2),
+              0 0 45px rgba(255, 215, 0, 0.1);
+}
+
+.glow-turquoise {
+  box-shadow: 0 0 15px rgba(0, 255, 246, 0.4),
+              0 0 30px rgba(0, 255, 246, 0.2),
+              0 0 45px rgba(0, 255, 246, 0.1);
+}
+
+.glow-purple {
+  box-shadow: 0 0 15px rgba(199, 125, 255, 0.4),
+              0 0 30px rgba(199, 125, 255, 0.2),
+              0 0 45px rgba(199, 125, 255, 0.1);
+}
+
+/* Text glow */
+.text-glow-gold {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
+               0 0 20px rgba(255, 215, 0, 0.6),
+               0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+.text-glow-turquoise {
+  text-shadow: 0 0 10px rgba(0, 255, 246, 0.8),
+               0 0 20px rgba(0, 255, 246, 0.6),
+               0 0 30px rgba(0, 255, 246, 0.4);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 10px rgba(199, 125, 246, 0.8),
+               0 0 20px rgba(199, 125, 246, 0.6),
+               0 0 30px rgba(199, 125, 246, 0.4);
+}
+
+/* Pulsing animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  50%, 100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Breathing effect */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Premium depth effects */
+.depth-layer-1 {
+  box-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.1),
+    inset 0 0 20px rgba(255, 215, 0, 0.05),
+    0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.depth-layer-2 {
+  box-shadow: 
+    0 0 30px rgba(0, 255, 246, 0.1),
+    inset 0 0 30px rgba(0, 255, 246, 0.05),
+    0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Energy connections */
+.energy-line {
+  position: relative;
+}
+
+.energy-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  width: 15px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3));
+  animation: pulse-line 2s ease-in-out infinite;
+}
+
+@keyframes pulse-line {
+  0%, 100% { opacity: 0.3; transform: scaleX(0.5); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+

@@ -1,0 +1,50 @@
+<svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stopColor="#ADFF2F" stopOpacity="1" />
+      <stop offset="50%" stopColor="#9AFF9A" stopOpacity="1" />
+      <stop offset="100%" stopColor="#00FFF6" stopOpacity="1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="strongGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outermost circle - thick yellow-green glow -->
+  <circle cx="60" cy="60" r="55" fill="none" stroke="url(#logoGradient)" stroke-width="10" filter="url(#strongGlow)" opacity="0.95"/>
+  
+  <!-- Middle circle - thinner -->
+  <circle cx="60" cy="60" r="45" fill="none" stroke="url(#logoGradient)" stroke-width="3" filter="url(#glow)" opacity="0.8"/>
+  
+  <!-- Inner circle - thinnest -->
+  <circle cx="60" cy="60" r="35" fill="none" stroke="url(#logoGradient)" stroke-width="2" filter="url(#glow)" opacity="0.7"/>
+  
+  <!-- Stylized "e" or "2" shape in center with gradient -->
+  <path d="M 45 50 
+           Q 50 45 55 50 
+           Q 60 55 55 60 
+           Q 50 65 55 70 
+           Q 60 75 65 70
+           L 65 65
+           Q 60 60 65 55" 
+        fill="none" 
+        stroke="url(#logoGradient)" 
+        stroke-width="5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        filter="url(#strongGlow)"/>
+  
+  <!-- Number 402 below, slightly to the right -->
+  <text x="70" y="110" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#00FFF6" text-anchor="middle" filter="url(#strongGlow)">402</text>
+</svg>
