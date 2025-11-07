@@ -1,29 +1,45 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
+import Portal from '@/components/Portal'
 import TopBar from '@/components/TopBar'
 import Dashboard from '@/components/Dashboard'
-import Waves from '@/components/Waves'
 import NetworkMap from '@/components/NetworkMap'
-import VaultZone from '@/components/VaultZone'
+import Transmissions from '@/components/Transmissions'
+import Protocol from '@/components/Protocol'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Home() {
+  const searchParams = useSearchParams()
   const { connected } = useWallet()
+  const [currentView, setCurrentView] = useState<'portal' | 'dashboard' | 'network' | 'transmissions' | 'protocol'>('portal')
   const [showWelcome, setShowWelcome] = useState(false)
-  const [currentView, setCurrentView] = useState<'dashboard' | 'waves' | 'network' | 'vault'>('dashboard')
-  
+
+  useEffect(() => {
+    const view = searchParams?.get('view') as typeof currentView
+    if (view && ['dashboard', 'network', 'transmissions', 'protocol'].includes(view)) {
+      setCurrentView(view)
+    } else {
+      setCurrentView('portal')
+    }
+  }, [searchParams])
 
   useEffect(() => {
     if (connected && !showWelcome) {
       setShowWelcome(true)
       const timer = setTimeout(() => {
         setShowWelcome(false)
-      }, 3000)
+      }, 2000)
       return () => clearTimeout(timer)
     }
   }, [connected, showWelcome])
+
+  // Show portal by default
+  if (currentView === 'portal') {
+    return <Portal />
+  }
 
   return (
     <main className="min-h-screen bg-black relative" style={{
@@ -34,7 +50,11 @@ export default function Home() {
       backgroundAttachment: 'fixed',
     }}>
       {/* Overlay for better readability */}
-      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+      
+      {/* Grid Background */}
+      <div className="fixed inset-0 grid-background z-0 opacity-30" />
+
       {/* Welcome overlay */}
       <AnimatePresence>
         {showWelcome && (
@@ -51,90 +71,30 @@ export default function Home() {
               className="text-center"
             >
               <motion.h1
-                className="text-6xl font-bold text-glow-gold mb-4"
+                className="text-6xl font-mono-title font-bold neon-yellow mb-4"
                 animate={{ 
                   textShadow: [
-                    '0 0 10px rgba(255, 215, 0, 0.8)',
-                    '0 0 30px rgba(255, 215, 0, 1)',
-                    '0 0 10px rgba(255, 215, 0, 0.8)',
+                    '0 0 10px #C3FF1F',
+                    '0 0 30px #C3FF1F',
+                    '0 0 10px #C3FF1F',
                   ]
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                Welcome, Node₄₀₂
+                NODE VERIFIED
               </motion.h1>
               <motion.p
-                className="text-xl text-resonance-turquoise"
+                className="text-xl font-mono text-wave-cyan"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Vault₄₀₂ link established.
+                Frequency sync complete.
               </motion.p>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Background effects - Soft glowing orbs */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" style={{ zIndex: 1 }}>
-        {/* Left purple/indigo glow */}
-        <motion.div
-          className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full blur-3xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(199, 125, 255, 0.15) 0%, rgba(199, 125, 255, 0.05) 40%, transparent 70%)',
-          }}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-            x: [-20, 20, -20],
-            y: [-20, 20, -20],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-        
-        {/* Right turquoise/green-yellow glow */}
-        <motion.div
-          className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] rounded-full blur-3xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(0, 255, 246, 0.15) 0%, rgba(0, 255, 246, 0.05) 40%, transparent 70%)',
-          }}
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.3, 0.5, 0.3],
-            x: [20, -20, 20],
-            y: [20, -20, 20],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 1,
-          }}
-        />
-        
-        {/* Subtle gold accent */}
-        <motion.div
-          className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full blur-3xl"
-          style={{
-            background: 'radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, rgba(255, 215, 0, 0.02) 40%, transparent 70%)',
-          }}
-          animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 2,
-          }}
-        />
-      </div>
 
       <TopBar onViewChange={setCurrentView} currentView={currentView} />
 
@@ -147,20 +107,8 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              style={{ minHeight: '100vh' }}
             >
               <Dashboard />
-            </motion.div>
-          )}
-          {currentView === 'waves' && (
-            <motion.div
-              key="waves"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Waves />
             </motion.div>
           )}
           {currentView === 'network' && (
@@ -174,15 +122,26 @@ export default function Home() {
               <NetworkMap />
             </motion.div>
           )}
-          {currentView === 'vault' && (
+          {currentView === 'transmissions' && (
             <motion.div
-              key="vault"
+              key="transmissions"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <VaultZone />
+              <Transmissions />
+            </motion.div>
+          )}
+          {currentView === 'protocol' && (
+            <motion.div
+              key="protocol"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Protocol />
             </motion.div>
           )}
         </AnimatePresence>
@@ -190,4 +149,3 @@ export default function Home() {
     </main>
   )
 }
-

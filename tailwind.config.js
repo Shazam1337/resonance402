@@ -8,33 +8,52 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'resonance-gold': '#FFD700',
-        'resonance-turquoise': '#00FFF6',
-        'resonance-purple': '#C77DFF',
-        'resonance-dark': '#000000',
+        'wave-acid-yellow': '#C3FF1F',
+        'wave-cyan': '#00FFE1',
+        'wave-gray': '#C0C0C0',
+        'wave-dark-gray': '#202020',
+        'wave-light-yellow': '#E3FF69',
+        'wave-black': '#000000',
+      },
+      fontFamily: {
+        'mono': ['IBM Plex Mono', 'monospace'],
+        'mono-title': ['Space Mono', 'monospace'],
       },
       animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'breathe': 'breathe 4s ease-in-out infinite',
+        'blink': 'blink 1s infinite',
+        'glitch': 'glitch 0.3s',
         'wave': 'wave 2s ease-in-out infinite',
+        'pulse-neon': 'pulse-neon 2s ease-in-out infinite',
       },
       keyframes: {
-        glow: {
-          '0%': { opacity: '0.5', filter: 'blur(8px)' },
-          '100%': { opacity: '1', filter: 'blur(4px)' },
+        blink: {
+          '0%, 50%': { opacity: '1' },
+          '51%, 100%': { opacity: '0' },
         },
-        breathe: {
-          '0%, 100%': { transform: 'scale(1)', opacity: '0.8' },
-          '50%': { transform: 'scale(1.05)', opacity: '1' },
+        glitch: {
+          '0%': { transform: 'translate(0)' },
+          '20%': { transform: 'translate(-2px, 2px)' },
+          '40%': { transform: 'translate(-2px, -2px)' },
+          '60%': { transform: 'translate(2px, 2px)' },
+          '80%': { transform: 'translate(2px, -2px)' },
+          '100%': { transform: 'translate(0)' },
         },
         wave: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        'pulse-neon': {
+          '0%, 100%': { 
+            opacity: '1',
+            boxShadow: '0 0 20px #C3FF1F',
+          },
+          '50%': { 
+            opacity: '0.8',
+            boxShadow: '0 0 40px #C3FF1F, 0 0 60px #C3FF1F',
+          },
         },
       },
     },
   },
   plugins: [],
 }
-

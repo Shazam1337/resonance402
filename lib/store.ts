@@ -1,181 +1,185 @@
 import { create } from 'zustand'
 
-export interface SocialWave {
+export interface Transmission {
   id: string
-  name: string
-  volumeGrowth: number // % growth
-  solImpact: number // SOL impact
-  socialResonance: number // % resonance
-  status: 'active' | 'cooling' | 'complete'
-  timestamp: number
-}
-
-export interface Transaction {
-  id: string
-  type: 'vault_fee' | 'wave_impact' | 'node_signal'
+  type: 'node_signal' | 'frequency_update' | 'verification'
   amount: number // SOL
   description: string
   timestamp: number
+  verified: boolean
 }
 
-export interface Reward {
+export interface Signal {
   id: string
-  username: string
-  amount: number // SOL earned
+  node: string
+  frequency: number
+  solImpact: number
+  status: 'active' | 'verified' | 'expired'
   timestamp: number
 }
 
 export interface Node {
   id: string
   address: string
-  rank: 'Echo' | 'Harmonic' | 'Carrier' | 'Conductor' | 'Source₄₀₂'
-  solResonance: number
-  totalSOL: number
-  lastSync: number
+  status: 'active' | 'syncing' | 'offline'
+  frequency: number
+  proof: 'valid' | 'pending' | 'invalid'
   x: number
   y: number
 }
 
-interface ResonanceStore {
-  // Vault metrics - constantly growing
-  vaultEnergy: number // SOL in Vault₄₀₂ (platform fees)
-  vaultGrowthRate: number // SOL per minute
-  vaultResonanceLevel: 'Low' | 'Medium' | 'High'
+interface WaveStore {
+  // Frequency metrics
+  frequencyIndex: number // Hz
+  frequencyVerified: boolean
   
-  // Trading metrics
-  tradingVolume24h: number // SOL volume
-  tradingVolumeGrowth: number // % growth
-  volumeToFeeRatio: number // % of volume going to Vault
+  // Wave Core (Vault)
+  waveCore: number // SOL
+  waveCoreGrowth: number // SOL per minute
+  waveCoreGrowthRate: number
   
-  // Network metrics
-  activeNodes: number
+  // Pulse Stream (Trading Volume)
+  pulseStream: number // SOL volume 24h
+  pulseStreamGrowth: number // % growth
+  
+  // Synced Nodes
+  syncedNodes: number
   nodesGrowth: number // new nodes this hour
-  resonanceIndex: number // Hz - network health
   
-  // Social impact
-  socialWaves: SocialWave[]
-  recentTransactions: Transaction[]
-  rewards: Reward[]
+  // Transmissions
+  transmissions: Transmission[]
+  signals: Signal[]
+  nodes: Node[]
+  
+  // Update flags to prevent unnecessary re-renders
+  lastTransmissionUpdate: number
+  lastSignalUpdate: number
   
   // Actions
-  addSocialWave: (wave: SocialWave) => void
-  addTransaction: (tx: Transaction) => void
-  addReward: (reward: Reward) => void
-  updateVault: () => void
-  updateNetwork: () => void
+  addTransmission: (tx: Transmission) => void
+  addSignal: (signal: Signal) => void
+  addNode: (node: Node) => void
+  updateFrequency: () => void
+  updateWaveCore: () => void
+  removeOldTransmissions: () => void
+  removeOldSignals: () => void
 }
 
-export const useResonanceStore = create<ResonanceStore>((set, get) => ({
-  vaultEnergy: 0,
-  vaultGrowthRate: 0.15, // Increased from 0.035 to 0.15 SOL per minute
-  vaultResonanceLevel: 'High',
+export const useWaveStore = create<WaveStore>((set, get) => ({
+  frequencyIndex: 400.66,
+  frequencyVerified: true,
   
-  tradingVolume24h: 7.0,
-  tradingVolumeGrowth: 2.8,
-  volumeToFeeRatio: 0.15,
+  waveCore: 0,
+  waveCoreGrowth: 0.007,
+  waveCoreGrowthRate: 0.152,
   
-  activeNodes: 149,
+  pulseStream: 8.8,
+  pulseStreamGrowth: 2.8,
+  
+  syncedNodes: 149,
   nodesGrowth: 3,
-  resonanceIndex: 401.07,
   
-  socialWaves: [
+  transmissions: [
     {
       id: '1',
-      name: 'SOL Rising',
-      volumeGrowth: 4.2,
-      solImpact: 0.82,
-      socialResonance: 8.5,
-      status: 'active',
-      timestamp: Date.now() - 300000,
-    },
-    {
-      id: '2',
-      name: 'Vault Storm',
-      volumeGrowth: 3.1,
-      solImpact: 0.65,
-      socialResonance: 6.2,
-      status: 'active',
-      timestamp: Date.now() - 600000,
-    },
-    {
-      id: '3',
-      name: 'Echo Pulse',
-      volumeGrowth: 1.4,
-      solImpact: 0.31,
-      socialResonance: 4.8,
-      status: 'cooling',
-      timestamp: Date.now() - 900000,
-    },
-  ],
-  
-  recentTransactions: [
-    {
-      id: '1',
-      type: 'vault_fee',
-      amount: 0.032,
-      description: 'Vault fee update',
-      timestamp: Date.now() - 5000,
-    },
-    {
-      id: '2',
-      type: 'wave_impact',
-      amount: 0.005,
-      description: "Wave 'Nova' impact",
-      timestamp: Date.now() - 12000,
-    },
-    {
-      id: '3',
       type: 'node_signal',
-      amount: 0.001,
-      description: 'Node 0xA17 posted new signal',
-      timestamp: Date.now() - 18000,
+      amount: 0.005,
+      description: 'Node 0xA17 verified',
+      timestamp: Date.now() - 5000,
+      verified: true,
+    },
+    {
+      id: '2',
+      type: 'frequency_update',
+      amount: 0.002,
+      description: 'Frequency sync complete',
+      timestamp: Date.now() - 12000,
+      verified: true,
     },
   ],
   
-  rewards: [
-    { id: '1', username: '@solverse', amount: 0.22, timestamp: Date.now() - 10000 },
-    { id: '2', username: '@vaultnode', amount: 0.19, timestamp: Date.now() - 20000 },
-    { id: '3', username: '@wavealpha', amount: 0.17, timestamp: Date.now() - 30000 },
+  signals: [
+    {
+      id: '1',
+      node: '0xA17',
+      frequency: 402.6,
+      solImpact: 0.005,
+      status: 'verified',
+      timestamp: Date.now() - 10000,
+    },
   ],
   
-  addSocialWave: (wave) => set((state) => ({
-    socialWaves: [wave, ...state.socialWaves].slice(0, 10), // Keep last 10
+  nodes: [],
+  lastTransmissionUpdate: Date.now(),
+  lastSignalUpdate: Date.now(),
+  
+  addTransmission: (tx) => set((state) => {
+    // Prevent duplicate IDs
+    if (state.transmissions.some(t => t.id === tx.id)) {
+      return state
+    }
+    return {
+      transmissions: [tx, ...state.transmissions].slice(0, 20),
+      lastTransmissionUpdate: Date.now(),
+    }
+  }),
+  
+  addSignal: (signal) => set((state) => {
+    // Prevent duplicate IDs
+    if (state.signals.some(s => s.id === signal.id)) {
+      return state
+    }
+    return {
+      signals: [signal, ...state.signals].slice(0, 15),
+      lastSignalUpdate: Date.now(),
+    }
+  }),
+  
+  addNode: (node) => set((state) => ({
+    nodes: [...state.nodes, node],
   })),
   
-  addTransaction: (tx) => set((state) => ({
-    recentTransactions: [tx, ...state.recentTransactions].slice(0, 20), // Keep last 20
-  })),
+  removeOldTransmissions: () => set((state) => {
+    const now = Date.now()
+    const maxAge = 5 * 60 * 1000 // 5 minutes
+    return {
+      transmissions: state.transmissions.filter(tx => now - tx.timestamp < maxAge),
+    }
+  }),
   
-  addReward: (reward) => set((state) => ({
-    rewards: [reward, ...state.rewards].slice(0, 10), // Keep last 10
-  })),
+  removeOldSignals: () => set((state) => {
+    const now = Date.now()
+    const maxAge = 5 * 60 * 1000 // 5 minutes
+    return {
+      signals: state.signals.filter(s => now - s.timestamp < maxAge),
+    }
+  }),
   
-  updateVault: () => {
-    set((state) => {
-      // Vault constantly grows based on growth rate (faster updates)
-      const growthPerSecond = state.vaultGrowthRate / 60
-      // Since we update every 200ms, multiply by 0.2 (200ms / 1000ms)
-      const growthPerUpdate = growthPerSecond * 0.2
-      const newVault = state.vaultEnergy + growthPerUpdate
-      
-      // More frequent larger spikes (simulating fee batches)
-      const shouldAddFee = Math.random() > 0.85 // Increased from 0.95 to 0.85 (15% chance vs 5%)
-      const feeAmount = shouldAddFee ? Math.random() * 0.05 + 0.01 : 0
-      
-      return {
-        vaultEnergy: newVault + feeAmount,
-        vaultGrowthRate: state.vaultGrowthRate + (Math.random() - 0.5) * 0.002,
-        tradingVolume24h: state.tradingVolume24h + Math.random() * 0.2, // Only grows, slower (0.2 instead of 1)
-        tradingVolumeGrowth: Math.max(0, state.tradingVolumeGrowth + (Math.random() - 0.3) * 0.001), // Only positive growth, slower
-        resonanceIndex: 401 + Math.sin(Date.now() / 10000) * 0.5 + Math.random() * 0.1,
-      }
-    })
+  updateFrequency: () => {
+    set((state) => ({
+      frequencyIndex: 400 + Math.sin(Date.now() / 10000) * 0.5 + Math.random() * 0.1,
+      frequencyVerified: Math.random() > 0.05, // 95% verified
+    }))
   },
   
-  updateNetwork: () => {
-    set((state) => ({
-      activeNodes: Math.floor(145 + Math.random() * 10),
-      nodesGrowth: Math.floor(2 + Math.random() * 3),
-    }))
+  updateWaveCore: () => {
+    set((state) => {
+      const growthPerSecond = state.waveCoreGrowth / 60
+      const growthPerUpdate = growthPerSecond * 0.5 // Update every 500ms
+      
+      // Smooth pulse stream updates (only grow, slower)
+      const pulseStreamChange = Math.max(0, (Math.random() - 0.2) * 0.02) // Only positive, smaller changes
+      const newPulseStream = state.pulseStream + pulseStreamChange
+      
+      // Smooth growth rate updates
+      const growthChange = (Math.random() - 0.5) * 0.01
+      const newGrowth = Math.max(0, state.pulseStreamGrowth + growthChange)
+      
+      return {
+        waveCore: state.waveCore + growthPerUpdate,
+        pulseStream: newPulseStream,
+        pulseStreamGrowth: Math.max(0, Math.min(10, newGrowth)), // Clamp between 0 and 10%
+      }
+    })
   },
 }))

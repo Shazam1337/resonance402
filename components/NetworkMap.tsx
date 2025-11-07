@@ -2,319 +2,227 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Node } from '@/lib/store'
-
-const ranks = ['Echo', 'Harmonic', 'Carrier', 'Conductor', 'Source₄₀₂'] as const
-const rankColors: Record<string, string> = {
-  'Echo': '#00FFF6',
-  'Harmonic': '#C77DFF',
-  'Carrier': '#FFD700',
-  'Conductor': '#FF6B9D',
-  'Source₄₀₂': '#FFFFFF',
-}
-
-// Generate mock nodes with SOL data
-const generateMockNodes = (): Node[] => {
-  return Array.from({ length: 40 }, (_, i) => {
-    const address = `${Math.random().toString(36).substring(2, 6)}...${Math.random().toString(36).substring(2, 4)}`
-    const rank = ranks[Math.floor(Math.random() * ranks.length)]
-    const solResonance = Math.random() * 0.1 // 0-0.1 SOL/s
-    const totalSOL = Math.random() * 50 + 1 // 1-51 SOL
-    const lastSync = Math.floor(Math.random() * 60) // 0-60 seconds
-    
-    return {
-      id: `node-${i}`,
-      address,
-      rank,
-      solResonance,
-      totalSOL,
-      lastSync,
-      x: Math.random() * 80 + 10, // 10-90%
-      y: Math.random() * 80 + 10, // 10-90%
-    }
-  })
-}
+import { useWaveStore, Node } from '@/lib/store'
 
 export default function NetworkMap() {
-  const [nodes, setNodes] = useState<Node[]>(generateMockNodes())
+  const { nodes, addNode } = useWaveStore()
   const [hoveredNode, setHoveredNode] = useState<Node | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [displayNodes, setDisplayNodes] = useState<Node[]>([])
+
+  // Initialize nodes if empty
+  useEffect(() => {
+    if (nodes.length === 0) {
+      const initialNodes: Node[] = Array.from({ length: 30 }, (_, i) => {
+        const angle = (i / 30) * Math.PI * 2
+        const radius = 200 + Math.random() * 150
+        return {
+          id: `node-${i}`,
+          address: `0x${Math.random().toString(16).substring(2, 8)}`,
+          status: Math.random() > 0.2 ? 'active' : 'syncing',
+          frequency: 400 + Math.random() * 5,
+          proof: Math.random() > 0.1 ? 'valid' : 'pending',
+          x: 50 + (radius * Math.cos(angle)) / 10,
+          y: 50 + (radius * Math.sin(angle)) / 10,
+        }
+      })
+      initialNodes.forEach(node => addNode(node))
+    }
+  }, [nodes.length, addNode])
 
   useEffect(() => {
+    setDisplayNodes(nodes)
+  }, [nodes])
+
+  // Update node positions slightly
+  useEffect(() => {
     const interval = setInterval(() => {
-      setNodes((prev) =>
+      setDisplayNodes((prev) =>
         prev.map((node) => ({
           ...node,
-          solResonance: Math.max(0, Math.min(0.1, node.solResonance + (Math.random() - 0.5) * 0.01)),
-          lastSync: Math.max(0, Math.min(60, node.lastSync + (Math.random() > 0.5 ? 1 : -1))),
+          x: node.x + (Math.random() - 0.5) * 0.5,
+          y: node.y + (Math.random() - 0.5) * 0.5,
+          frequency: 400 + Math.random() * 5,
         }))
       )
     }, 2000)
     return () => clearInterval(interval)
   }, [])
 
-  // Generate connections between nodes (flow lines)
-  const connections = nodes.slice(0, 20).map((node, i) => {
-    const targetIndex = (i + 1) % nodes.length
-    const target = nodes[targetIndex]
-    const flowVolume = Math.min(node.solResonance, target.solResonance) * 1000 // Scale for visualization
-    
-    return {
-      from: node,
-      to: target,
-      volume: flowVolume,
-      color: rankColors[node.rank],
-    }
-  })
-
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-12"
-      >
-        <h2 className="text-4xl font-bold text-glow-gold mb-2">Network Map</h2>
-        <p className="text-resonance-turquoise/70">SOL Flow Visualization — Token Energy Map</p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Node Info Panel */}
-        <div className="lg:col-span-1">
-          <div className="bg-gray-900/40 border border-gray-800/50 rounded-xl p-6 backdrop-blur-sm sticky top-24">
-            <h3 className="text-xl font-bold text-resonance-turquoise mb-4">Node Ranks</h3>
-            <div className="space-y-3 mb-6">
-              {ranks.map((rank) => (
-                <div key={rank} className="flex items-center gap-3">
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: rankColors[rank] }}
-                  />
-                  <span className="text-sm text-gray-300">{rank}</span>
-                </div>
-              ))}
-            </div>
-            
-            {hoveredNode && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="border-t border-gray-800 pt-4 mt-4"
-              >
-                <h4 className="text-lg font-semibold text-resonance-gold mb-3">
-                  Node Details
-                </h4>
-                <div className="space-y-2 text-sm">
-                  <div>
-                    <span className="text-gray-400">Node:</span>
-                    <div className="text-resonance-turquoise font-mono text-xs">{hoveredNode.address}</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Resonance:</span>
-                    <div className="text-resonance-gold">
-                      {hoveredNode.solResonance.toFixed(3)} <span className="text-xs">SOL/s</span>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Total SOL:</span>
-                    <div className="text-resonance-gold">
-                      {hoveredNode.totalSOL.toFixed(2)} <span className="text-xs">SOL</span>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Last sync:</span>
-                    <div className="text-resonance-turquoise">{hoveredNode.lastSync}s ago</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Rank:</span>
-                    <div className="text-white" style={{ color: rankColors[hoveredNode.rank] }}>
-                      {hoveredNode.rank}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {!hoveredNode && (
-              <div className="text-xs text-gray-500 mt-4">
-                Hover over nodes to see details
-              </div>
-            )}
-          </div>
+    <div className="min-h-screen p-6 md:p-12 relative">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-mono-title font-bold neon-yellow mb-2 uppercase tracking-widest">
+            NETWORK MAP
+          </h1>
+          <p className="font-mono text-wave-gray text-sm uppercase tracking-widest">
+            SOL Flow Visualization — {displayNodes.length} Nodes Active
+          </p>
         </div>
 
         {/* Network Visualization */}
-        <div className="lg:col-span-3">
-          <div
-            ref={containerRef}
-            className="relative bg-gray-900/50 border border-resonance-turquoise/30 rounded-xl p-8 h-[600px] overflow-hidden backdrop-blur-sm"
-            style={{
-              boxShadow: '0 0 40px rgba(0, 255, 246, 0.1), inset 0 0 40px rgba(0, 255, 246, 0.05)',
-            }}
-          >
-            {/* Background depth */}
-            <div className="absolute inset-0 bg-gradient-to-br from-resonance-turquoise/5 to-transparent" />
-            <div className="absolute inset-0 opacity-20" style={{
-              backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(0, 255, 246, 0.1) 0%, transparent 70%)',
-            }} />
-            <svg className="absolute inset-0 w-full h-full z-10">
-              {/* SOL Flow Lines - thickness based on volume, color based on frequency */}
-              {connections.map((conn, i) => {
-                const frequency = Math.max(conn.from.solResonance, conn.to.solResonance) * 10
-                const thickness = Math.max(1, Math.min(4, conn.volume / 10))
-                const opacity = Math.min(0.6, Math.max(0.1, frequency / 10))
-                
-                return (
-                  <motion.line
-                    key={`${conn.from.id}-${conn.to.id}`}
-                    x1={`${conn.from.x}%`}
-                    y1={`${conn.from.y}%`}
-                    x2={`${conn.to.x}%`}
-                    y2={`${conn.to.y}%`}
-                    stroke={conn.color}
-                    strokeWidth={thickness}
-                    strokeOpacity={opacity}
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ 
-                      pathLength: 1, 
-                      opacity: opacity,
-                    }}
-                    transition={{ duration: 1, delay: i * 0.05 }}
-                  />
-                )
-              })}
-              
-              {/* Vault pulls lines effect */}
-              {nodes.slice(0, 5).map((node, i) => {
-                const centerX = 50
-                const centerY = 50
-                return (
-                  <motion.line
-                    key={`vault-${node.id}`}
-                    x1={`${centerX}%`}
-                    y1={`${centerY}%`}
-                    x2={`${node.x}%`}
-                    y2={`${node.y}%`}
-                    stroke={rankColors[node.rank]}
-                    strokeWidth="1"
-                    strokeOpacity="0.2"
-                    strokeDasharray="4 4"
-                    initial={{ pathLength: 0 }}
-                    animate={{
-                      pathLength: 1,
-                      strokeDashoffset: [0, -8],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: 'linear',
-                      delay: i * 0.2,
-                    }}
-                  />
-                )
-              })}
-            </svg>
+        <div
+          ref={containerRef}
+          className="relative w-full h-[600px] border border-wave-dark-gray bg-black overflow-hidden"
+        >
+          {/* Grid Background */}
+          <div className="absolute inset-0 grid-background opacity-20" />
 
-            {/* Nodes */}
-            <div className="relative z-20">
-            {nodes.map((node) => {
-              const nodeSize = 4 + node.solResonance * 40 // Size based on resonance
+          {/* Center - Wave Core */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+            animate={{
+              scale: [1, 1.1, 1],
+              boxShadow: [
+                '0 0 20px #C3FF1F',
+                '0 0 40px #C3FF1F, 0 0 60px #C3FF1F',
+                '0 0 20px #C3FF1F',
+              ],
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            <div className="w-16 h-16 rounded-full bg-wave-acid-yellow flex items-center justify-center">
+              <div className="text-xs font-mono-title font-bold text-black uppercase">
+                CORE
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Connections */}
+          <svg className="absolute inset-0 w-full h-full z-0">
+            {displayNodes.map((node) => {
+              const centerX = (containerRef.current?.offsetWidth || 0) / 2
+              const centerY = (containerRef.current?.offsetHeight || 0) / 2
+              const nodeX = (node.x / 100) * (containerRef.current?.offsetWidth || 0)
+              const nodeY = (node.y / 100) * (containerRef.current?.offsetHeight || 0)
               
               return (
-                <motion.div
-                  key={node.id}
-                  className="absolute cursor-pointer"
-                  style={{
-                    left: `${node.x}%`,
-                    top: `${node.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                  onHoverStart={() => setHoveredNode(node)}
-                  onHoverEnd={() => setHoveredNode(null)}
-                  whileHover={{ scale: 1.5, zIndex: 10 }}
+                <motion.line
+                  key={`line-${node.id}`}
+                  x1={centerX}
+                  y1={centerY}
+                  x2={nodeX}
+                  y2={nodeY}
+                  stroke={node.status === 'active' ? '#00FFE1' : '#202020'}
+                  strokeWidth={node.status === 'active' ? 1 : 0.5}
+                  strokeOpacity={node.status === 'active' ? 0.3 : 0.1}
                   animate={{
-                    x: Math.sin(Date.now() / 2000 + node.id.charCodeAt(0)) * 2,
-                    y: Math.cos(Date.now() / 2000 + node.id.charCodeAt(0)) * 2,
+                    strokeOpacity: node.status === 'active' ? [0.3, 0.6, 0.3] : 0.1,
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <div className="relative">
-                    {/* Aura - brighter for higher resonance */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        backgroundColor: rankColors[node.rank],
-                        opacity: 0.3 + node.solResonance * 5,
-                        filter: 'blur(8px)',
-                      }}
-                      animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.3 + node.solResonance * 5, 0.6 + node.solResonance * 5, 0.3 + node.solResonance * 5],
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                    {/* Node */}
-                    <div
-                      className="relative rounded-full border-2"
-                      style={{
-                        width: `${nodeSize}px`,
-                        height: `${nodeSize}px`,
-                        backgroundColor: rankColors[node.rank],
-                        borderColor: rankColors[node.rank],
-                        boxShadow: `0 0 ${nodeSize * 2}px ${rankColors[node.rank]}, 0 0 ${nodeSize * 4}px ${rankColors[node.rank]}`,
-                      }}
-                    />
-                  </div>
-                </motion.div>
+                />
               )
             })}
-            </div>
+          </svg>
 
-            {/* Center Vault₄₀₂ */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
+          {/* Nodes */}
+          {displayNodes.map((node) => {
+            const nodeX = (node.x / 100) * (containerRef.current?.offsetWidth || 0)
+            const nodeY = (node.y / 100) * (containerRef.current?.offsetHeight || 0)
+            
+            return (
               <motion.div
-                className="relative w-24 h-24 rounded-full border-2 border-resonance-gold flex items-center justify-center bg-black/70 backdrop-blur-md"
+                key={node.id}
+                className="absolute z-20 cursor-pointer"
+                style={{
+                  left: `${node.x}%`,
+                  top: `${node.y}%`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+                onMouseEnter={() => setHoveredNode(node)}
+                onMouseLeave={() => setHoveredNode(null)}
                 animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 360],
-                  boxShadow: [
-                    '0 0 30px rgba(255, 215, 0, 0.6)',
-                    '0 0 50px rgba(255, 215, 0, 0.9)',
-                    '0 0 30px rgba(255, 215, 0, 0.6)',
-                  ],
+                  scale: hoveredNode?.id === node.id ? 1.2 : 1,
                 }}
-                transition={{ 
-                  scale: { duration: 2, repeat: Infinity },
-                  rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
-                  boxShadow: { duration: 2, repeat: Infinity },
-                }}
+                transition={{ duration: 0.2 }}
               >
-                <span className="text-resonance-gold font-bold text-glow-gold text-lg">₄₀₂</span>
+                <motion.div
+                  className={`w-4 h-4 rounded-full border-2 ${
+                    node.status === 'active'
+                      ? 'bg-wave-cyan border-wave-cyan'
+                      : node.status === 'syncing'
+                      ? 'bg-wave-acid-yellow border-wave-acid-yellow'
+                      : 'bg-wave-dark-gray border-wave-dark-gray'
+                  }`}
+                  animate={{
+                    boxShadow: node.status === 'active'
+                      ? ['0 0 10px #00FFE1', '0 0 20px #00FFE1', '0 0 10px #00FFE1']
+                      : node.status === 'syncing'
+                      ? ['0 0 10px #C3FF1F', '0 0 20px #C3FF1F', '0 0 10px #C3FF1F']
+                      : [],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
               </motion.div>
-              {/* Orbital rings around vault */}
-              <motion.div
-                className="absolute inset-0 rounded-full border border-resonance-gold/30"
-                animate={{ rotate: -360, scale: [1.2, 1.3, 1.2] }}
-                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              />
-            </div>
+            )
+          })}
+        </div>
 
-            {/* Stats Overlay */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-sm">
-              <div className="bg-black/70 px-4 py-2 rounded-lg backdrop-blur-sm border border-gray-800">
-                <span className="text-gray-400">Total Nodes: </span>
-                <span className="text-resonance-turquoise font-bold">{nodes.length}</span>
-              </div>
-              <div className="bg-black/70 px-4 py-2 rounded-lg backdrop-blur-sm border border-gray-800">
-                <span className="text-gray-400">Active Flows: </span>
-                <span className="text-resonance-gold font-bold">{connections.length}</span>
-              </div>
-              <div className="bg-black/70 px-4 py-2 rounded-lg backdrop-blur-sm border border-gray-800">
-                <span className="text-gray-400">Total SOL Flow: </span>
-                <span className="text-resonance-purple font-bold">
-                  {connections.reduce((sum, c) => sum + c.volume, 0).toFixed(2)} SOL/s
+        {/* Node Info Panel */}
+        {hoveredNode && (
+          <motion.div
+            className="mt-8 terminal-block p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-4">
+              NODE_{hoveredNode.address}
+            </div>
+            <div className="space-y-3 font-mono text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-wave-gray">Status:</span>
+                <span className={`${
+                  hoveredNode.status === 'active' ? 'text-wave-cyan' : 
+                  hoveredNode.status === 'syncing' ? 'text-wave-acid-yellow' : 
+                  'text-wave-gray'
+                }`}>
+                  {hoveredNode.status.toUpperCase()}
                 </span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-wave-gray">Frequency:</span>
+                <span className="text-white">{hoveredNode.frequency.toFixed(2)} Hz</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-wave-gray">Proof:</span>
+                <span className={`${
+                  hoveredNode.proof === 'valid' ? 'text-wave-acid-yellow' : 
+                  hoveredNode.proof === 'pending' ? 'text-wave-cyan' : 
+                  'text-red-500'
+                }`}>
+                  {hoveredNode.proof.toUpperCase()}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div className="terminal-block p-6">
+            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-2">
+              ACTIVE NODES
+            </div>
+            <div className="text-3xl font-mono font-bold text-white">
+              {displayNodes.filter(n => n.status === 'active').length}
+            </div>
+          </div>
+          <div className="terminal-block p-6">
+            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-2">
+              SYNCING NODES
+            </div>
+            <div className="text-3xl font-mono font-bold text-wave-cyan">
+              {displayNodes.filter(n => n.status === 'syncing').length}
+            </div>
+          </div>
+          <div className="terminal-block p-6">
+            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-2">
+              VALID PROOFS
+            </div>
+            <div className="text-3xl font-mono font-bold text-wave-acid-yellow">
+              {displayNodes.filter(n => n.proof === 'valid').length}
             </div>
           </div>
         </div>
