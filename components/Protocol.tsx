@@ -65,7 +65,7 @@ export default function Protocol() {
               <ul className="space-y-2">
                 {section.details.map((detail, i) => (
                   <li key={i} className="font-mono text-sm text-white flex items-start">
-                    <span className="text-wave-acid-yellow mr-3">></span>
+                    <span className="text-wave-acid-yellow mr-3">{'>'}</span>
                     {detail}
                   </li>
                 ))}
