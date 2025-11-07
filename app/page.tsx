@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Portal from '@/components/Portal'
 import TopBar from '@/components/TopBar'
@@ -11,7 +11,7 @@ import Protocol from '@/components/Protocol'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams()
   const { connected } = useWallet()
   const [currentView, setCurrentView] = useState<'portal' | 'dashboard' | 'network' | 'transmissions' | 'protocol'>('portal')
@@ -147,5 +147,17 @@ export default function Home() {
         </AnimatePresence>
       </div>
     </main>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-wave-acid-yellow font-mono">Loading...</div>
+      </div>
+    }>
+      <HomeContent />
+    </Suspense>
   )
 }
