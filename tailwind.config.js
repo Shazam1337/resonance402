@@ -8,48 +8,43 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'wave-acid-yellow': '#C3FF1F',
-        'wave-cyan': '#00FFE1',
-        'wave-gray': '#C0C0C0',
-        'wave-dark-gray': '#202020',
-        'wave-light-yellow': '#E3FF69',
-        'wave-black': '#000000',
+        'cryo-bg': '#0C0F13',
+        'cryo-electric-blue': '#4DE1FF',
+        'cryo-turquoise': '#00BFA6',
+        'cryo-ice-lime': '#C9FFD9',
+        'cryo-text': '#E6EAF0',
+        'cryo-steel': '#3A424D',
       },
       fontFamily: {
         'mono': ['IBM Plex Mono', 'monospace'],
-        'mono-title': ['Space Mono', 'monospace'],
+        'mono-title': ['Orbitron', 'Space Mono', 'monospace'],
       },
       animation: {
         'blink': 'blink 1s infinite',
-        'glitch': 'glitch 0.3s',
-        'wave': 'wave 2s ease-in-out infinite',
-        'pulse-neon': 'pulse-neon 2s ease-in-out infinite',
+        'cryo-pulse': 'cryo-pulse 3s ease-in-out infinite',
+        'cryo-glow': 'cryo-glow 2s ease-in-out infinite',
       },
       keyframes: {
         blink: {
           '0%, 50%': { opacity: '1' },
           '51%, 100%': { opacity: '0' },
         },
-        glitch: {
-          '0%': { transform: 'translate(0)' },
-          '20%': { transform: 'translate(-2px, 2px)' },
-          '40%': { transform: 'translate(-2px, -2px)' },
-          '60%': { transform: 'translate(2px, 2px)' },
-          '80%': { transform: 'translate(2px, -2px)' },
-          '100%': { transform: 'translate(0)' },
-        },
-        wave: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
-        'pulse-neon': {
+        'cryo-pulse': {
           '0%, 100%': { 
-            opacity: '1',
-            boxShadow: '0 0 20px #C3FF1F',
+            opacity: '0.6',
+            boxShadow: '0 0 10px rgba(77, 225, 255, 0.3)',
           },
           '50%': { 
-            opacity: '0.8',
-            boxShadow: '0 0 40px #C3FF1F, 0 0 60px #C3FF1F',
+            opacity: '1',
+            boxShadow: '0 0 20px rgba(77, 225, 255, 0.6), 0 0 30px rgba(77, 225, 255, 0.4)',
+          },
+        },
+        'cryo-glow': {
+          '0%, 100%': { 
+            textShadow: '0 0 5px rgba(77, 225, 255, 0.5), 0 0 10px rgba(77, 225, 255, 0.3)',
+          },
+          '50%': { 
+            textShadow: '0 0 10px rgba(77, 225, 255, 0.8), 0 0 20px rgba(77, 225, 255, 0.5), 0 0 30px rgba(77, 225, 255, 0.3)',
           },
         },
       },

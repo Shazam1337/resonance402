@@ -3,8 +3,8 @@ import './globals.css'
 import { WalletProvider } from '@/components/WalletProvider'
 
 export const metadata: Metadata = {
-  title: 'WAVE402 — The Verifiable Frequency Protocol',
-  description: 'A Protocol for Verifiable Social Liquidity - The Internet speaks in waves. WAVE402 makes them verifiable.',
+  title: 'CRYOVOLT402 — Frozen Frequency Protocol',
+  description: 'A Protocol for Frozen Frequency Verification - Cryo-signal precision. CRYOVOLT402 verifies with frozen accuracy.',
   icons: {
     icon: [
       { url: '/logo.png', type: 'image/png' },
@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white overflow-x-hidden">
+      <body className="bg-gray-100 text-cryo-bg overflow-x-hidden">
         <WalletProvider>
           {children}
         </WalletProvider>

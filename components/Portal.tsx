@@ -15,10 +15,10 @@ export default function Portal() {
     
     // Status line updates
     const statuses = [
-      '> syncing frequencies...',
-      '> nodes verified: TRUE',
-      '> portal ready.',
-      '> frequency sync... nodes online: 149 ... verified: true',
+      '> cryo frequency calibrating...',
+      '> nodes verified: STABLE',
+      '> protocol ready.',
+      '> frequency frozen... nodes active: 149 ... status: STABLE',
     ]
     
     let index = 0
@@ -31,18 +31,18 @@ export default function Portal() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gray-100 relative overflow-hidden">
       {/* Grid Background */}
-      <div className="fixed inset-0 grid-background z-0" />
+      <div className="fixed inset-0 cryo-grid z-0" />
       
-      {/* Wave animation overlay */}
-      <div className="fixed inset-0 z-0 opacity-20">
+      {/* Cryo wave animation overlay */}
+      <div className="fixed inset-0 z-0 opacity-15">
         <svg className="w-full h-full" viewBox="0 0 1920 1080" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#C3FF1F" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#00FFE1" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#C3FF1F" stopOpacity="0.3" />
+            <linearGradient id="cryoWaveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#4DE1FF" stopOpacity="0.2" />
+              <stop offset="50%" stopColor="#00BFA6" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#4DE1FF" stopOpacity="0.2" />
             </linearGradient>
           </defs>
           {Array.from({ length: 5 }).map((_, i) => (
@@ -50,8 +50,8 @@ export default function Portal() {
               key={i}
               d={`M 0 ${400 + i * 50} Q 480 ${350 + i * 50 + Math.sin(i) * 30} 960 ${400 + i * 50} T 1920 ${400 + i * 50}`}
               fill="none"
-              stroke="url(#waveGradient)"
-              strokeWidth="2"
+              stroke="url(#cryoWaveGradient)"
+              strokeWidth="1.5"
               animate={{
                 d: [
                   `M 0 ${400 + i * 50} Q 480 ${350 + i * 50 + Math.sin(i) * 30} 960 ${400 + i * 50} T 1920 ${400 + i * 50}`,
@@ -59,7 +59,7 @@ export default function Portal() {
                   `M 0 ${400 + i * 50} Q 480 ${350 + i * 50 + Math.sin(i) * 30} 960 ${400 + i * 50} T 1920 ${400 + i * 50}`,
                 ],
               }}
-              transition={{ duration: 3, repeat: Infinity, delay: i * 0.2 }}
+              transition={{ duration: 4, repeat: Infinity, delay: i * 0.3 }}
             />
           ))}
         </svg>
@@ -73,11 +73,11 @@ export default function Portal() {
           animate={showGlitch ? { x: [0, -2, 2, 0] } : {}}
           transition={{ duration: 0.3 }}
         >
-          <div className="text-6xl md:text-8xl font-mono-title font-bold neon-yellow mb-4">
-            WAVE402
+          <div className="text-6xl md:text-8xl font-mono-title font-bold cryo-glow-blue mb-4">
+            CRYOVOLT402
           </div>
-          <div className="text-sm md:text-base font-mono text-wave-gray uppercase tracking-widest text-center">
-            THE VERIFIABLE FREQUENCY PROTOCOL
+          <div className="text-sm md:text-base font-mono text-cryo-bg uppercase tracking-widest text-center">
+            FROZEN FREQUENCY PROTOCOL
           </div>
         </motion.div>
 
@@ -88,38 +88,33 @@ export default function Portal() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h1 className="text-5xl md:text-7xl lg:text-9xl font-mono-title font-bold text-white mb-4 leading-tight">
-            WELCOME TO
+          <h1 className="text-5xl md:text-7xl lg:text-9xl font-mono-title font-bold text-cryo-bg mb-4 leading-tight">
+            ENTER CRYOVOLT402
             <br />
-            THE VERIFIABLE
+            FROZEN FREQUENCY
             <br />
-            FREQUENCY
+            ACTIVE
           </h1>
-          <p className="text-lg md:text-xl font-mono text-wave-gray mt-6 uppercase tracking-widest">
-            A Protocol for Verifiable Social Liquidity
+          <p className="text-lg md:text-xl font-mono text-cryo-bg/70 mt-6 uppercase tracking-widest">
+            A Protocol for Frozen Frequency Verification
           </p>
         </motion.div>
 
         {/* CTA Button */}
         <motion.button
           onClick={() => router.push('/?view=dashboard')}
-          className="px-12 py-4 bg-wave-acid-yellow text-black font-mono-title font-bold text-lg uppercase tracking-widest border-2 border-wave-acid-yellow relative overflow-hidden group"
+          className="px-12 py-4 bg-cryo-electric-blue text-cryo-bg font-mono-title font-bold text-lg uppercase tracking-widest border-2 border-cryo-electric-blue relative overflow-hidden group glow-cryo-blue"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
           whileHover={{ 
-            backgroundColor: '#000000',
-            color: '#C3FF1F',
-            boxShadow: '0 0 30px #C3FF1F',
+            backgroundColor: '#00BFA6',
+            borderColor: '#00BFA6',
+            boxShadow: '0 0 30px rgba(77, 225, 255, 0.5)',
           }}
           whileTap={{ scale: 0.98 }}
         >
-          <span className="relative z-10">LAUNCH WAVE402 PORTAL</span>
-          <motion.div
-            className="absolute inset-0 bg-wave-acid-yellow opacity-0 group-hover:opacity-20"
-            animate={{ x: ['-100%', '100%'] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 1 }}
-          />
+          <span className="relative z-10">INITIATE PROTOCOL</span>
         </motion.button>
 
         {/* Status Line */}
@@ -130,7 +125,7 @@ export default function Portal() {
           transition={{ delay: 1 }}
         >
           <div className="max-w-7xl mx-auto">
-            <div className="font-mono text-sm text-wave-acid-yellow border-t border-wave-dark-gray pt-4">
+            <div className="font-mono text-sm text-cryo-electric-blue border-t border-cryo-steel/30 pt-4">
               <span className="cursor-blink">{statusLine}</span>
             </div>
           </div>

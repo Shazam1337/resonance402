@@ -165,7 +165,7 @@ export default function Dashboard() {
 
   const TerminalBlock = ({ title, children, className = '' }: { title: string, children: React.ReactNode, className?: string }) => (
     <div className={`terminal-block p-6 ${className}`}>
-      <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-4">
+      <div className="font-mono-title text-xs text-cryo-electric-blue uppercase tracking-widest mb-4 cryo-glow-blue">
         {title}
       </div>
       {children}
@@ -185,79 +185,79 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto">
         {/* Grid Layout 2x3 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* FREQUENCY_INDEX */}
-          <TerminalBlock title="FREQUENCY_INDEX" className="lg:col-span-1">
+          {/* CRYO_FREQUENCY */}
+          <TerminalBlock title="CRYO_FREQUENCY" className="lg:col-span-1">
             <div className="space-y-4">
-              <div className="text-4xl font-mono font-bold text-white">
-                {frequencyIndex.toFixed(2)} <span className="text-2xl text-wave-gray">Hz</span>
+              <div className="text-4xl font-mono font-bold text-cryo-bg">
+                {frequencyIndex.toFixed(2)} <span className="text-2xl text-cryo-steel">Hz</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex flex-col gap-1">
-                  {['V', 'E', 'R', 'I', 'F', 'I', 'E', 'D'].map((letter, i) => (
+                  {['F', 'R', 'O', 'Z', 'E', 'N'].map((letter, i) => (
                     <span
                       key={i}
-                      className="text-xs font-mono text-wave-acid-yellow"
+                      className="text-xs font-mono text-cryo-electric-blue"
                       style={{ opacity: frequencyVerified ? 1 : 0.3 }}
                     >
                       {letter}
                     </span>
                   ))}
                 </div>
-                <div className="flex-1 h-16 border-l border-wave-dark-gray ml-4 relative overflow-hidden">
+                <div className="flex-1 h-16 border-l border-cryo-steel/30 ml-4 relative overflow-hidden">
                   <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <path
                       d="M 0,50 Q 25,45 50,50 T 100,50"
                       fill="none"
-                      stroke="#00FFE1"
+                      stroke="#4DE1FF"
                       strokeWidth="1"
                       opacity="0.6"
                     />
                   </svg>
                 </div>
               </div>
-              <div className="text-xs font-mono text-wave-gray uppercase">
-                {frequencyVerified ? 'VERIFIED' : 'PENDING'}
+              <div className="text-xs font-mono text-cryo-bg/70 uppercase">
+                {frequencyVerified ? 'STABLE' : 'SYNCING'}
               </div>
             </div>
           </TerminalBlock>
 
-          {/* VAULT_CORE */}
-          <TerminalBlock title="VAULT_CORE" className="lg:col-span-1">
+          {/* ENERGY_RESERVE */}
+          <TerminalBlock title="ENERGY_RESERVE" className="lg:col-span-1">
             <div className="space-y-4">
-              <div className="text-3xl font-mono font-bold text-white">
-                {waveCore.toFixed(6)} <span className="text-xl text-wave-gray">SOL</span>
+              <div className="text-3xl font-mono font-bold text-cryo-bg">
+                {waveCore.toFixed(6)} <span className="text-xl text-cryo-steel">SOL</span>
               </div>
-              <div className="text-sm font-mono text-wave-cyan">
+              <div className="text-sm font-mono text-cryo-turquoise">
                 {waveCoreGrowth.toFixed(3)} SOL / min
               </div>
-              <div className="text-xs font-mono text-wave-gray">
-                Growth: <span className="text-wave-acid-yellow">+{waveCoreGrowthRate.toFixed(3)}</span>
+              <div className="text-xs font-mono text-cryo-bg/70">
+                Status: <span className="text-cryo-electric-blue">ACTIVE</span>
               </div>
-              <div className="relative w-full h-2 bg-wave-dark-gray">
+              <div className="relative w-full h-2 bg-cryo-steel/20">
                 <div
-                  className="absolute top-0 left-0 h-full bg-wave-acid-yellow"
+                  className="absolute top-0 left-0 h-full bg-cryo-electric-blue"
                   style={{ width: `${Math.min((waveCore / 10) * 100, 100)}%` }}
                 />
               </div>
             </div>
           </TerminalBlock>
 
-          {/* PULSE_STREAM */}
-          <TerminalBlock title="PULSE_STREAM" className="lg:col-span-1">
+          {/* DATA_FLOW */}
+          <TerminalBlock title="DATA_FLOW" className="lg:col-span-1">
             <div className="space-y-4">
-              <div className="text-2xl font-mono font-bold text-white">
-                Volume 24h: {pulseStream.toFixed(1)} <span className="text-lg text-wave-gray">SOL</span>
+              <div className="text-2xl font-mono font-bold text-cryo-bg">
+                Volume 24h: {pulseStream.toFixed(1)} <span className="text-lg text-cryo-steel">SOL</span>
               </div>
-              <div className="text-sm font-mono text-wave-cyan">
-                <span className="text-wave-acid-yellow">+{pulseStreamGrowth.toFixed(1)}%</span> Growth
+              <div className="text-sm font-mono text-cryo-turquoise">
+                <span className="text-cryo-electric-blue">+{pulseStreamGrowth.toFixed(1)}%</span> Flow Rate
               </div>
               <div className="h-24 relative">
                 {dataPoints.length > 0 ? (
                   <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <defs>
-                      <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#C3FF1F" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#00FFE1" stopOpacity="0.8" />
+                      <linearGradient id="dataFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#4DE1FF" stopOpacity="0.8" />
+                        <stop offset="100%" stopColor="#00BFA6" stopOpacity="0.8" />
                       </linearGradient>
                     </defs>
                     <motion.path
@@ -267,7 +267,7 @@ export default function Dashboard() {
                         return `${i === 0 ? 'M' : 'L'} ${x} ${y}`
                       }).join(' ')}`}
                       fill="none"
-                      stroke="url(#pulseGradient)"
+                      stroke="url(#dataFlowGradient)"
                       strokeWidth="2"
                     />
                     {dataPoints.map((point, i) => {
@@ -279,26 +279,26 @@ export default function Dashboard() {
                           cx={x}
                           cy={y}
                           r="1.5"
-                          fill="#C3FF1F"
+                          fill="#4DE1FF"
                           opacity="0.8"
                         />
                       )
                     })}
                   </svg>
                 ) : (
-                  <div className="text-xs font-mono text-wave-gray">Loading chart data...</div>
+                  <div className="text-xs font-mono text-cryo-bg/70">Calibrating...</div>
                 )}
               </div>
             </div>
           </TerminalBlock>
 
-          {/* SYNCED_NODES */}
-          <TerminalBlock title="SYNCED_NODES" className="lg:col-span-1">
+          {/* ACTIVE_NODES */}
+          <TerminalBlock title="ACTIVE_NODES" className="lg:col-span-1">
             <div className="space-y-4">
-              <div className="text-4xl font-mono font-bold text-white">
-                {syncedNodes} <span className="text-2xl text-wave-gray">nodes</span>
+              <div className="text-4xl font-mono font-bold text-cryo-bg">
+                {syncedNodes} <span className="text-2xl text-cryo-steel">nodes</span>
               </div>
-              <div className="text-sm font-mono text-wave-cyan">
+              <div className="text-sm font-mono text-cryo-turquoise">
                 +{nodesGrowth} new this hour
               </div>
               <div className="relative w-32 h-32 mx-auto">
@@ -308,7 +308,7 @@ export default function Dashboard() {
                     cy="64"
                     r="56"
                     fill="none"
-                    stroke="#202020"
+                    stroke="rgba(58, 66, 77, 0.2)"
                     strokeWidth="8"
                   />
                   <circle
@@ -316,7 +316,7 @@ export default function Dashboard() {
                     cy="64"
                     r="56"
                     fill="none"
-                    stroke="#C3FF1F"
+                    stroke="#4DE1FF"
                     strokeWidth="8"
                     strokeLinecap="round"
                     strokeDasharray={`${2 * Math.PI * 56}`}
@@ -325,46 +325,46 @@ export default function Dashboard() {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-2xl font-mono font-bold text-wave-acid-yellow">
+                    <div className="text-2xl font-mono font-bold text-cryo-electric-blue">
                       {Math.round(radialProgress)}%
                     </div>
-                    <div className="text-xs font-mono text-wave-gray">SYNCED</div>
+                    <div className="text-xs font-mono text-cryo-bg/70">ACTIVE</div>
                   </div>
                 </div>
               </div>
             </div>
           </TerminalBlock>
 
-          {/* TRANSMISSION_LOG */}
-          <TerminalBlock title="TRANSMISSION_LOG" className="lg:col-span-1">
+          {/* CRYO_LOG */}
+          <TerminalBlock title="CRYO_LOG" className="lg:col-span-1">
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {transmissions.slice(0, 8).map((tx) => {
                 const barHeight = (tx.amount / maxTransmissionAmount) * 100
                 return (
                   <div
                     key={tx.id}
-                    className="text-xs font-mono border-b border-wave-dark-gray pb-2 relative"
+                    className="text-xs font-mono border-b border-cryo-steel/30 pb-2 relative"
                   >
                     <div className="flex items-start justify-between mb-1 gap-2">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-wave-cyan uppercase whitespace-nowrap">
+                          <span className="text-cryo-turquoise uppercase whitespace-nowrap">
                             {tx.type.replace('_', ' ')}
                           </span>
-                          <span className="text-wave-acid-yellow whitespace-nowrap">
+                          <span className="text-cryo-electric-blue whitespace-nowrap">
                             +{tx.amount.toFixed(4)} SOL
                           </span>
                         </div>
-                        <div className="text-white text-[11px] leading-tight">
+                        <div className="text-cryo-bg text-[11px] leading-tight">
                           {tx.description}
                         </div>
-                        <div className="text-wave-gray text-[10px] mt-1">
+                        <div className="text-cryo-steel/70 text-[10px] mt-1">
                           {new Date(tx.timestamp).toLocaleTimeString()}
                         </div>
                       </div>
-                      <div className="flex-shrink-0 w-1 h-12 bg-wave-dark-gray relative ml-2">
+                      <div className="flex-shrink-0 w-1 h-12 bg-cryo-steel/20 relative ml-2">
                         <div
-                          className="absolute bottom-0 left-0 right-0 bg-wave-acid-yellow"
+                          className="absolute bottom-0 left-0 right-0 bg-cryo-electric-blue"
                           style={{ 
                             height: `${Math.max(barHeight, 8)}%`,
                             minHeight: '4px'
@@ -378,36 +378,36 @@ export default function Dashboard() {
             </div>
           </TerminalBlock>
 
-          {/* SIGNAL_FEED */}
-          <TerminalBlock title="SIGNAL_FEED" className="lg:col-span-1">
+          {/* SIGNAL_CHAIN */}
+          <TerminalBlock title="SIGNAL_CHAIN" className="lg:col-span-1">
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {signals.slice(0, 8).map((signal) => {
                 const barHeight = (signal.solImpact / maxSignalAmount) * 100
                 return (
                   <div
                     key={signal.id}
-                    className="text-xs font-mono border-b border-wave-dark-gray pb-2 relative"
+                    className="text-xs font-mono border-b border-cryo-steel/30 pb-2 relative"
                   >
                     <div className="flex items-start justify-between mb-1 gap-2">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-wave-cyan">Node {signal.node}</span>
+                          <span className="text-cryo-turquoise">Node {signal.node}</span>
                           <span className={`text-xs uppercase ${
-                            signal.status === 'verified' ? 'text-wave-acid-yellow' : 'text-wave-gray'
+                            signal.status === 'verified' ? 'text-cryo-electric-blue' : 'text-cryo-steel'
                           }`}>
-                            {signal.status}
+                            {signal.status === 'verified' ? 'STABLE' : 'SYNCING'}
                           </span>
                         </div>
-                        <div className="text-white text-[11px] leading-tight">
+                        <div className="text-cryo-bg text-[11px] leading-tight">
                           Frequency: {signal.frequency.toFixed(2)} Hz
                         </div>
-                        <div className="text-wave-acid-yellow text-[11px] mt-1">
+                        <div className="text-cryo-electric-blue text-[11px] mt-1">
                           +{signal.solImpact.toFixed(4)} SOL Impact
                         </div>
                       </div>
-                      <div className="flex-shrink-0 w-1 h-12 bg-wave-dark-gray relative ml-2">
+                      <div className="flex-shrink-0 w-1 h-12 bg-cryo-steel/20 relative ml-2">
                         <div
-                          className="absolute bottom-0 left-0 right-0 bg-wave-acid-yellow"
+                          className="absolute bottom-0 left-0 right-0 bg-cryo-turquoise"
                           style={{ 
                             height: `${Math.max(barHeight, 8)}%`,
                             minHeight: '4px'

@@ -13,10 +13,10 @@ export default function Transmissions() {
       const types: ('node_signal' | 'frequency_update' | 'verification')[] = ['node_signal', 'frequency_update', 'verification']
       const descriptions = [
         `Node ${Math.random().toString(36).substring(2, 6)} verified`,
-        'Frequency sync complete',
+        'Cryo frequency calibrated',
         'Verification proof validated',
-        'Node resonance increasing',
-        'Wave transmission received',
+        'Node status: STABLE',
+        'Signal transfer stabilized',
       ]
       const type = types[Math.floor(Math.random() * types.length)]
       
@@ -55,11 +55,11 @@ export default function Transmissions() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-mono-title font-bold neon-yellow mb-2 uppercase tracking-widest">
+          <h1 className="text-4xl font-mono-title font-bold cryo-glow-blue mb-2 uppercase tracking-widest">
             TRANSMISSIONS
           </h1>
-          <p className="font-mono text-wave-gray text-sm uppercase tracking-widest">
-            Live Signal Feed — Network Activity Log
+          <p className="font-mono text-cryo-bg/70 text-sm uppercase tracking-widest">
+            Cryo Frequency Monitor — Network Activity Log
           </p>
         </div>
 
@@ -67,41 +67,41 @@ export default function Transmissions() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Transmission Log */}
           <div className="terminal-block p-6">
-            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-4">
-              TRANSMISSION_LOG
+            <div className="font-mono-title text-xs text-cryo-electric-blue uppercase tracking-widest mb-4 cryo-glow-blue">
+              CRYO_LOG
             </div>
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
               {transmissions.map((tx, index) => (
                 <motion.div
                   key={tx.id}
-                  className="border-b border-wave-dark-gray pb-3"
+                  className="border-b border-cryo-steel/30 pb-3"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className={`font-mono text-xs uppercase tracking-widest ${
-                      tx.type === 'node_signal' ? 'text-wave-cyan' :
-                      tx.type === 'frequency_update' ? 'text-wave-acid-yellow' :
-                      'text-white'
+                      tx.type === 'node_signal' ? 'text-cryo-turquoise' :
+                      tx.type === 'frequency_update' ? 'text-cryo-electric-blue' :
+                      'text-cryo-bg'
                     }`}>
                       {tx.type.replace('_', ' ')}
                     </span>
                     <span className={`font-mono text-xs ${
-                      tx.verified ? 'text-wave-acid-yellow' : 'text-wave-gray'
+                      tx.verified ? 'text-cryo-electric-blue' : 'text-cryo-steel'
                     }`}>
-                      {tx.verified ? 'VERIFIED' : 'PENDING'}
+                      {tx.verified ? 'STABLE' : 'SYNCING'}
                     </span>
                   </div>
-                  <div className="font-mono text-sm text-white mb-1">
+                  <div className="font-mono text-sm text-cryo-bg mb-1">
                     {tx.description}
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-wave-gray">
+                    <span className="font-mono text-xs text-cryo-steel/70">
                       {new Date(tx.timestamp).toLocaleString()}
                     </span>
-                    <span className="font-mono text-xs text-wave-acid-yellow">
-                      +{tx.amount.toFixed(4)} SOL
+                    <span className="font-mono text-xs text-cryo-electric-blue">
+                      Δ +{tx.amount.toFixed(4)} SOL / min
                     </span>
                   </div>
                 </motion.div>
@@ -111,39 +111,39 @@ export default function Transmissions() {
 
           {/* Signal Feed */}
           <div className="terminal-block p-6">
-            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-4">
-              SIGNAL_FEED
+            <div className="font-mono-title text-xs text-cryo-electric-blue uppercase tracking-widest mb-4 cryo-glow-blue">
+              SIGNAL_CHAIN
             </div>
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
               {signals.map((signal, index) => (
                 <motion.div
                   key={signal.id}
-                  className="border-b border-wave-dark-gray pb-3"
+                  className="border-b border-cryo-steel/30 pb-3"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-xs text-wave-cyan uppercase tracking-widest">
-                      Node {signal.node}
+                    <span className="font-mono text-xs text-cryo-turquoise uppercase tracking-widest">
+                      NODE {signal.node}
                     </span>
                     <span className={`font-mono text-xs uppercase ${
-                      signal.status === 'verified' ? 'text-wave-acid-yellow' :
-                      signal.status === 'active' ? 'text-wave-cyan' :
-                      'text-wave-gray'
+                      signal.status === 'verified' ? 'text-cryo-electric-blue' :
+                      signal.status === 'active' ? 'text-cryo-turquoise' :
+                      'text-cryo-steel'
                     }`}>
-                      {signal.status}
+                      {signal.status === 'verified' ? 'VERIFIED' : signal.status === 'active' ? 'ACTIVE' : 'PENDING'}
                     </span>
                   </div>
-                  <div className="font-mono text-sm text-white mb-1">
+                  <div className="font-mono text-sm text-cryo-bg mb-1">
                     Frequency: {signal.frequency.toFixed(2)} Hz
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-wave-gray">
+                    <span className="font-mono text-xs text-cryo-steel/70">
                       {new Date(signal.timestamp).toLocaleString()}
                     </span>
-                    <span className="font-mono text-xs text-wave-acid-yellow">
-                      +{signal.solImpact.toFixed(4)} SOL Impact
+                    <span className="font-mono text-xs text-cryo-electric-blue">
+                      Δ +{signal.solImpact.toFixed(4)} SOL / min
                     </span>
                   </div>
                 </motion.div>
@@ -155,26 +155,26 @@ export default function Transmissions() {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <div className="terminal-block p-6">
-            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-2">
+            <div className="font-mono-title text-xs text-cryo-electric-blue uppercase tracking-widest mb-2 cryo-glow-blue">
               TOTAL TRANSMISSIONS
             </div>
-            <div className="text-3xl font-mono font-bold text-white">
+            <div className="text-3xl font-mono font-bold text-cryo-bg">
               {transmissions.length}
             </div>
           </div>
           <div className="terminal-block p-6">
-            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-2">
+            <div className="font-mono-title text-xs text-cryo-electric-blue uppercase tracking-widest mb-2 cryo-glow-blue">
               VERIFIED SIGNALS
             </div>
-            <div className="text-3xl font-mono font-bold text-wave-acid-yellow">
+            <div className="text-3xl font-mono font-bold text-cryo-electric-blue">
               {signals.filter(s => s.status === 'verified').length}
             </div>
           </div>
           <div className="terminal-block p-6">
-            <div className="font-mono-title text-xs text-wave-acid-yellow uppercase tracking-widest mb-2">
+            <div className="font-mono-title text-xs text-cryo-electric-blue uppercase tracking-widest mb-2 cryo-glow-blue">
               ACTIVE NODES
             </div>
-            <div className="text-3xl font-mono font-bold text-wave-cyan">
+            <div className="text-3xl font-mono font-bold text-cryo-turquoise">
               {new Set(signals.map(s => s.node)).size}
             </div>
           </div>

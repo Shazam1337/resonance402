@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import Portal from '@/components/Portal'
 import TopBar from '@/components/TopBar'
 import Dashboard from '@/components/Dashboard'
-import NetworkMap from '@/components/NetworkMap'
 import Transmissions from '@/components/Transmissions'
 import Protocol from '@/components/Protocol'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -14,12 +13,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 function HomeContent() {
   const searchParams = useSearchParams()
   const { connected } = useWallet()
-  const [currentView, setCurrentView] = useState<'portal' | 'dashboard' | 'network' | 'transmissions' | 'protocol'>('portal')
+  const [currentView, setCurrentView] = useState<'portal' | 'dashboard' | 'transmissions' | 'protocol'>('portal')
   const [showWelcome, setShowWelcome] = useState(false)
 
   useEffect(() => {
     const view = searchParams?.get('view') as typeof currentView
-    if (view && ['dashboard', 'network', 'transmissions', 'protocol'].includes(view)) {
+    if (view && ['dashboard', 'transmissions', 'protocol'].includes(view)) {
       setCurrentView(view)
     } else {
       setCurrentView('portal')
@@ -42,7 +41,7 @@ function HomeContent() {
   }
 
   return (
-    <main className="min-h-screen bg-black relative" style={{
+    <main className="min-h-screen bg-gray-100 relative" style={{
       backgroundImage: 'url(/back.jpg)',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
@@ -50,10 +49,10 @@ function HomeContent() {
       backgroundAttachment: 'fixed',
     }}>
       {/* Overlay for better readability */}
-      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gray-100/80 pointer-events-none" />
       
       {/* Grid Background */}
-      <div className="fixed inset-0 grid-background z-0 opacity-30" />
+      <div className="fixed inset-0 cryo-grid z-0 opacity-30" />
 
       {/* Welcome overlay */}
       <AnimatePresence>
@@ -62,7 +61,7 @@ function HomeContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-gray-100 z-50 flex items-center justify-center"
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -71,25 +70,25 @@ function HomeContent() {
               className="text-center"
             >
               <motion.h1
-                className="text-6xl font-mono-title font-bold neon-yellow mb-4"
+                className="text-6xl font-mono-title font-bold cryo-glow-blue mb-4"
                 animate={{ 
                   textShadow: [
-                    '0 0 10px #C3FF1F',
-                    '0 0 30px #C3FF1F',
-                    '0 0 10px #C3FF1F',
+                    '0 0 10px rgba(77, 225, 255, 0.5)',
+                    '0 0 30px rgba(77, 225, 255, 0.8)',
+                    '0 0 10px rgba(77, 225, 255, 0.5)',
                   ]
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                NODE VERIFIED
+                NODE STABLE
               </motion.h1>
               <motion.p
-                className="text-xl font-mono text-wave-cyan"
+                className="text-xl font-mono text-cryo-turquoise"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Frequency sync complete.
+                Cryo frequency calibrated.
               </motion.p>
             </motion.div>
           </motion.div>
@@ -109,17 +108,6 @@ function HomeContent() {
               transition={{ duration: 0.5 }}
             >
               <Dashboard />
-            </motion.div>
-          )}
-          {currentView === 'network' && (
-            <motion.div
-              key="network"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-            >
-              <NetworkMap />
             </motion.div>
           )}
           {currentView === 'transmissions' && (
@@ -153,8 +141,8 @@ function HomeContent() {
 export default function Home() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-wave-acid-yellow font-mono">Loading...</div>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-cryo-electric-blue font-mono">Loading...</div>
       </div>
     }>
       <HomeContent />

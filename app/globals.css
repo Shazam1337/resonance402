@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --wave-acid-yellow: #C3FF1F;
-  --wave-cyan: #00FFE1;
-  --wave-gray: #C0C0C0;
-  --wave-dark-gray: #202020;
-  --wave-light-yellow: #E3FF69;
-  --wave-black: #000000;
+  --cryo-bg: #0C0F13;
+  --cryo-electric-blue: #4DE1FF;
+  --cryo-turquoise: #00BFA6;
+  --cryo-ice-lime: #C9FFD9;
+  --cryo-text: #E6EAF0;
+  --cryo-steel: #3A424D;
 }
 
 * {
@@ -21,8 +21,8 @@
 
 html, body {
   height: 100%;
-  background: #000000;
-  color: #ffffff;
+  background: #F5F5F5;
+  color: var(--cryo-bg);
   overflow-x: hidden;
   font-family: 'IBM Plex Mono', monospace;
 }
@@ -33,30 +33,31 @@ body {
   letter-spacing: 0.15em;
 }
 
-/* Custom scrollbar - cybernetic style */
+/* Custom scrollbar - cryo style - light theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #F5F5F5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--wave-acid-yellow);
+  background: rgba(58, 66, 77, 0.3);
   border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--wave-light-yellow);
+  background: var(--cryo-electric-blue);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Orbitron', 'Space Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  font-weight: 700;
+  font-weight: 600;
+  color: var(--cryo-bg);
 }
 
 /* Terminal cursor blink */
@@ -68,7 +69,7 @@ h1, h2, h3, h4, h5, h6 {
 .cursor-blink::after {
   content: '_';
   animation: blink 1s infinite;
-  color: var(--wave-acid-yellow);
+  color: var(--cryo-electric-blue);
 }
 
 /* Glitch effect */
@@ -85,53 +86,69 @@ h1, h2, h3, h4, h5, h6 {
   animation: glitch 0.3s;
 }
 
-/* Neon glow effects */
-.neon-yellow {
-  color: var(--wave-acid-yellow);
+/* Cryo glow effects */
+.cryo-glow-blue {
+  color: var(--cryo-electric-blue);
   text-shadow: 
-    0 0 5px var(--wave-acid-yellow),
-    0 0 10px var(--wave-acid-yellow),
-    0 0 15px var(--wave-acid-yellow),
-    0 0 20px var(--wave-acid-yellow);
+    0 0 5px rgba(77, 225, 255, 0.5),
+    0 0 10px rgba(77, 225, 255, 0.3),
+    0 0 15px rgba(77, 225, 255, 0.2);
 }
 
-.neon-cyan {
-  color: var(--wave-cyan);
+.cryo-glow-turquoise {
+  color: var(--cryo-turquoise);
   text-shadow: 
-    0 0 5px var(--wave-cyan),
-    0 0 10px var(--wave-cyan),
-    0 0 15px var(--wave-cyan);
+    0 0 5px rgba(0, 191, 166, 0.5),
+    0 0 10px rgba(0, 191, 166, 0.3);
 }
 
-.glow-yellow {
+.glow-cryo-blue {
   box-shadow: 
-    0 0 10px var(--wave-acid-yellow),
-    0 0 20px var(--wave-acid-yellow),
-    0 0 30px var(--wave-acid-yellow);
+    0 0 10px rgba(77, 225, 255, 0.3),
+    0 0 20px rgba(77, 225, 255, 0.2),
+    0 0 30px rgba(77, 225, 255, 0.1);
 }
 
-.glow-cyan {
+.glow-cryo-turquoise {
   box-shadow: 
-    0 0 10px var(--wave-cyan),
-    0 0 20px var(--wave-cyan),
-    0 0 30px var(--wave-cyan);
+    0 0 10px rgba(0, 191, 166, 0.3),
+    0 0 20px rgba(0, 191, 166, 0.2),
+    0 0 30px rgba(0, 191, 166, 0.1);
 }
 
-/* Grid background */
+.glow-cryo-ice {
+  box-shadow: 
+    0 0 10px rgba(201, 255, 217, 0.2),
+    0 0 20px rgba(201, 255, 217, 0.1);
+}
+
+/* Grid background - cryo style - light theme */
 .grid-background {
   background-image: 
-    linear-gradient(var(--wave-dark-gray) 1px, transparent 1px),
-    linear-gradient(90deg, var(--wave-dark-gray) 1px, transparent 1px);
+    linear-gradient(rgba(58, 66, 77, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(58, 66, 77, 0.15) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.3;
 }
 
-/* Terminal block style */
+.cryo-grid {
+  background-image: 
+    linear-gradient(rgba(77, 225, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77, 225, 255, 0.2) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.4;
+}
+
+/* Cryo glass panel style - light theme */
 .terminal-block {
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid var(--wave-dark-gray);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(58, 66, 77, 0.3);
   font-family: 'IBM Plex Mono', monospace;
   position: relative;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(77, 225, 255, 0.1);
 }
 
 .terminal-block::before {
@@ -139,8 +156,15 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   left: 8px;
   top: 8px;
-  color: var(--wave-acid-yellow);
+  color: var(--cryo-electric-blue);
   font-size: 12px;
+}
+
+.terminal-block:hover {
+  border-color: var(--cryo-electric-blue);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 0 30px rgba(77, 225, 255, 0.2);
 }
 
 /* Wave animation */
@@ -168,44 +192,45 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mono-title {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Orbitron', 'Space Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.15em;
 }
 
-/* Custom wallet adapter modal styles */
+/* Custom wallet adapter modal styles - cryo */
 .wallet-adapter-modal-wrapper {
-  background: rgba(0, 0, 0, 0.95) !important;
+  background: rgba(12, 15, 19, 0.95) !important;
   backdrop-filter: blur(10px) !important;
 }
 
 .wallet-adapter-modal {
-  background: rgba(0, 0, 0, 0.98) !important;
-  border: 1px solid #202020 !important;
+  background: rgba(12, 15, 19, 0.98) !important;
+  border: 1px solid var(--cryo-steel) !important;
   border-radius: 0 !important;
-  box-shadow: 0 0 40px rgba(195, 255, 31, 0.2) !important;
+  box-shadow: 0 0 40px rgba(77, 225, 255, 0.2) !important;
   font-family: 'IBM Plex Mono', monospace !important;
 }
 
 .wallet-adapter-modal-title {
-  color: #C3FF1F !important;
-  font-weight: bold !important;
-  font-family: 'Space Mono', monospace !important;
+  color: var(--cryo-electric-blue) !important;
+  font-weight: 600 !important;
+  font-family: 'Orbitron', monospace !important;
   text-transform: uppercase !important;
   letter-spacing: 0.15em !important;
 }
 
 .wallet-adapter-modal-list-item {
-  background: rgba(32, 32, 32, 0.5) !important;
-  border: 1px solid #202020 !important;
+  background: rgba(58, 66, 77, 0.3) !important;
+  border: 1px solid var(--cryo-steel) !important;
   border-radius: 0 !important;
-  color: #C0C0C0 !important;
+  color: var(--cryo-text) !important;
   font-family: 'IBM Plex Mono', monospace !important;
   transition: all 0.2s !important;
 }
 
 .wallet-adapter-modal-list-item:hover {
-  background: rgba(195, 255, 31, 0.1) !important;
-  border-color: #C3FF1F !important;
-  color: #C3FF1F !important;
+  background: rgba(77, 225, 255, 0.1) !important;
+  border-color: var(--cryo-electric-blue) !important;
+  color: var(--cryo-electric-blue) !important;
+  box-shadow: 0 0 20px rgba(77, 225, 255, 0.2) !important;
 }

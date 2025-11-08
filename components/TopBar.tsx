@@ -8,8 +8,8 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 
 interface TopBarProps {
-  onViewChange: (view: 'portal' | 'dashboard' | 'network' | 'transmissions' | 'protocol') => void
-  currentView: 'portal' | 'dashboard' | 'network' | 'transmissions' | 'protocol'
+  onViewChange: (view: 'portal' | 'dashboard' | 'transmissions' | 'protocol') => void
+  currentView: 'portal' | 'dashboard' | 'transmissions' | 'protocol'
 }
 
 export default function TopBar({ onViewChange, currentView }: TopBarProps) {
@@ -34,14 +34,13 @@ export default function TopBar({ onViewChange, currentView }: TopBarProps) {
 
   const navItems = [
     { id: 'dashboard', label: 'DASHBOARD' },
-    { id: 'network', label: 'NETWORK MAP' },
     { id: 'transmissions', label: 'TRANSMISSIONS' },
     { id: 'protocol', label: 'PROTOCOL' },
   ]
 
   return (
     <motion.header
-      className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-wave-dark-gray"
+      className="fixed top-0 left-0 right-0 z-50 bg-gray-100/95 backdrop-blur-sm border-b border-cryo-steel/30"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -58,17 +57,17 @@ export default function TopBar({ onViewChange, currentView }: TopBarProps) {
               <div className="w-12 h-12 flex items-center justify-center relative">
                 <Image 
                   src="/logo.png" 
-                  alt="WAVE402 Logo" 
+                  alt="CRYOVOLT402 Logo" 
                   width={48}
                   height={48}
-                  className="drop-shadow-[0_0_10px_rgba(195,255,31,0.5)]"
+                  className="drop-shadow-[0_0_10px_rgba(77,225,255,0.5)]"
                   priority
                 />
               </div>
             </div>
             <div>
-              <h1 className="text-lg font-mono-title font-bold neon-yellow">WAVE402</h1>
-              <p className="text-xs font-mono text-wave-gray uppercase tracking-widest">VERIFIABLE FREQUENCY</p>
+              <h1 className="text-lg font-mono-title font-bold text-cryo-electric-blue">CRYOVOLT402</h1>
+              <p className="text-xs font-mono text-cryo-bg uppercase tracking-widest">FROZEN FREQUENCY</p>
             </div>
           </motion.div>
 
@@ -80,8 +79,8 @@ export default function TopBar({ onViewChange, currentView }: TopBarProps) {
                 onClick={() => onViewChange(item.id as typeof currentView)}
                 className={`px-4 py-2 font-mono text-xs uppercase tracking-widest transition-all border ${
                   currentView === item.id
-                    ? 'bg-wave-acid-yellow text-black border-wave-acid-yellow'
-                    : 'text-wave-gray border-wave-dark-gray hover:text-wave-acid-yellow hover:border-wave-acid-yellow/50'
+                    ? 'bg-cryo-electric-blue text-cryo-bg border-cryo-electric-blue glow-cryo-blue'
+                    : 'text-cryo-bg border-cryo-steel/30 hover:text-cryo-electric-blue hover:border-cryo-electric-blue/50'
                 }`}
               >
                 {item.label}
@@ -92,8 +91,8 @@ export default function TopBar({ onViewChange, currentView }: TopBarProps) {
           {/* Right side */}
           <div className="flex items-center gap-4">
             {/* Network Status */}
-            <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-wave-gray">
-              <div className={`w-2 h-2 rounded-full ${networkStatus === 'Connected' ? 'bg-wave-cyan' : 'bg-red-500'}`} />
+            <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-cryo-bg">
+              <div className={`w-2 h-2 rounded-full ${networkStatus === 'Connected' ? 'bg-cryo-electric-blue' : 'bg-red-500'}`} />
               <span className="uppercase tracking-widest">Network: {networkStatus}</span>
             </div>
 
@@ -102,8 +101,8 @@ export default function TopBar({ onViewChange, currentView }: TopBarProps) {
               onClick={handleConnect}
               className={`px-4 py-2 font-mono text-xs uppercase tracking-widest border transition-all ${
                 connected
-                  ? 'bg-wave-cyan/20 text-wave-cyan border-wave-cyan/50'
-                  : 'bg-wave-acid-yellow text-black border-wave-acid-yellow hover:bg-wave-light-yellow'
+                  ? 'bg-cryo-electric-blue/20 text-cryo-electric-blue border-cryo-electric-blue/50'
+                  : 'bg-cryo-electric-blue text-cryo-bg border-cryo-electric-blue hover:bg-cryo-turquoise hover:border-cryo-turquoise'
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -115,12 +114,12 @@ export default function TopBar({ onViewChange, currentView }: TopBarProps) {
 
             {/* Twitter */}
             <Link
-              href="https://x.com/Wave402_xyz"
+              href="https://x.com/cryovolt402"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 border border-wave-dark-gray hover:border-wave-acid-yellow transition-colors"
+              className="p-2 border border-cryo-steel/30 hover:border-cryo-electric-blue transition-colors"
             >
-              <svg className="w-5 h-5 text-wave-gray hover:text-wave-acid-yellow" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-cryo-bg hover:text-cryo-electric-blue" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </Link>
